@@ -1,0 +1,7 @@
+.window {
+  width: 400px;
+  height: 450px;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+}
