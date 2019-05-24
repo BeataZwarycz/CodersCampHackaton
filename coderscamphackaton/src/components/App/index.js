@@ -1,15 +1,13 @@
 import React from 'react';
 import { ThemeProvider } from '@livechat/ui-kit'
-
-import AgentResponse from '../AgentResponse';
-import ChatWindow from '../ChatWindow';
+import Start from '../Start'
 
 
 function App() {
   return (
     <ThemeProvider>
-      <AgentResponse content="Sample agent response"/>
-      <ChatWindow />
+      <Start />
+      
     </ThemeProvider>
   );
 }
