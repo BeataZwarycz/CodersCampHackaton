@@ -1,5 +1,5 @@
 import React from 'react';
-import { TitleBar, IconButton, CloseIcon, Message, MessageList, TextComposer, TextInput, SendButton, Row, FixedWrapper, MessageText, MessageGroup } from '@livechat/ui-kit';
+import { TitleBar, IconButton, CloseIcon, Message, MessageList, FixedWrapper, MessageText, MessageGroup } from '@livechat/ui-kit';
 import './ChatWindow.css';
 import Settings from '../SettingsChat/Settings'
 import CustomizeDiv from '../CustomizeDiv/CustomizeDiv'
@@ -159,10 +159,16 @@ class ChatWindow extends React.Component
             <Message>{this.populateMessages()}</Message>
           </MessageGroup>
         </MessageList>
-                  <div>
+          <div className="send">
           <textarea ref={this.textarea} />
-          <button onClick={this.toggleListen} ref={this.submitButton}>microphone</button> 
-          <button onClick={this.send}>Submit</button>
+          <div className="box">
+          <button className="micro" onClick={this.toggleListen} ref={this.submitButton}><i class="material-icons">
+mic
+</i></button> 
+          <button className="submit" onClick={this.send}><i class="material-icons">
+send
+</i></button>
+          </div>
         </div>
         {/* <TextComposer onSend={(msg) => this.sendMessage(msg)}>
           <Row align="center">
