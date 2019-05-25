@@ -19,8 +19,8 @@ class Settings extends React.Component {
     textAreaText: 'black',
     boxBackground: 'white',
     iconColor: '#427fe1',
-    underDiv: "white"
-
+    underDiv: "white",
+    margin: '19px'
   };
 
   showModal = () => {
@@ -51,12 +51,15 @@ class Settings extends React.Component {
 
   sizeA = () => {
     this.setState({fontSizeA: '8px'})
+    this.setState({margin: '19px'})
   }
   sizeAA = () => {
     this.setState({fontSizeA: '15px'})
+    this.setState({margin: '14px'})
   }
     sizeAAA = () => {
     this.setState({fontSizeA: '23px'})
+    this.setState({margin: '6px'})
   }
 
   defaultContrast = () => {
@@ -170,7 +173,10 @@ class Settings extends React.Component {
             color: ${this.state.iconColor};
           }
           .lc-1pdwro1 {
-            background-color: ${this.state.underDiv}
+            background-color: ${this.state.underDiv};
+          }
+          .send {
+            margin-top:${this.state.margin}
           }
         `}
         </style>

@@ -33,13 +33,16 @@ class ChatWindow extends React.Component
   }
 
   send = () => {
+    if(this.textarea.current.value.length < 1) {
+      return
+    }else {
     this.setState({ check: false })
-
     let ownMessages = [...this.state.ownMessages];
     ownMessages.push(this.textarea.current.value);
     this.setState({ ownMessages });
     this.populateMessages();
     this.textarea.current.value = '';    
+    }
   }
 
 
@@ -72,6 +75,7 @@ class ChatWindow extends React.Component
 
     if (this.state.listening) {
       recognition.start()
+      
       recognition.onend = () => {
         console.log("...continue listening...")
         recognition.start()
@@ -81,12 +85,15 @@ class ChatWindow extends React.Component
       recognition.stop()
       recognition.onend = () => {
         console.log("Stopped listening per click")
+          document.querySelector('.iconMicro').style.color = "#427fe1"
         this.readClientMessage()
       }
     }
 
     recognition.onstart = () => {
       console.log("Listening!")
+      document.querySelector('.iconMicro').style.color = "red"
+      
     }
 
     let finalTranscript = ''
@@ -105,6 +112,7 @@ class ChatWindow extends React.Component
       if (stopCmd[0] === 'stop' && stopCmd[1] === 'listening') {
         recognition.stop()
         recognition.onend = () => {
+              document.querySelector('.iconMicro').style.color = "#427fe1"
           console.log('Stopped listening per command')
           const finalText = transcriptArr.slice(0, -3).join(' ')
           console.log(finalText)
@@ -160,9 +168,9 @@ class ChatWindow extends React.Component
           </MessageGroup>
         </MessageList>
           <div className="send">
-          <textarea className="mainTextArea"ref={this.textarea} />
+          <textarea className="mainTextArea" ref={this.textarea} />
           <div className="box">
-          <button className="micro" onClick={this.toggleListen} ref={this.submitButton}><i class="material-icons">
+          <button className="micro" onClick={this.toggleListen} ref={this.submitButton}><i className="material-icons iconMicro">
 mic
 </i></button> 
           <button className="submit" onClick={this.send}><i class="material-icons">

@@ -189,5 +189,21 @@ code {
 }
 
 .send {
-  margin-top: 10px;
+  margin-top: 19px;
+  height: 31px
+}
+
+.lc-1pdwro1 {
+  background-color: white;
+  border-radius: 17px;
+}
+
+.mainTextArea {
+
+  height: 32px;
+}
+
+.box i {
+  margin-left: 11px;
+  font-size: 30px;
 }
