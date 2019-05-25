@@ -159,10 +159,16 @@ class ChatWindow extends React.Component
             <Message>{this.populateMessages()}</Message>
           </MessageGroup>
         </MessageList>
-                  <div>
+          <div className="send">
           <textarea ref={this.textarea} />
-          <button onClick={this.toggleListen} ref={this.submitButton}>microphone</button> 
-          <button onClick={this.send}>Submit</button>
+          <div className="box">
+          <button className="micro" onClick={this.toggleListen} ref={this.submitButton}><i class="material-icons">
+mic
+</i></button> 
+          <button className="submit" onClick={this.send}><i class="material-icons">
+send
+</i></button>
+          </div>
         </div>
         {/* <TextComposer onSend={(msg) => this.sendMessage(msg)}>
           <Row align="center">
