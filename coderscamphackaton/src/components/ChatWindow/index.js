@@ -2,27 +2,136 @@ import React from 'react';
 import { TitleBar, IconButton, CloseIcon, Message, MessageList, TextComposer, TextInput, SendButton, Row, FixedWrapper, MessageText, MessageGroup } from '@livechat/ui-kit';
 import './ChatWindow.css';
 
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const recognition = new SpeechRecognition()
+
+recognition.continous = true
+recognition.interimResults = true
+recognition.lang = 'en-US'
+
 class ChatWindow extends React.Component
 {
   constructor(props)
   {
     super(props);
     this.state = {
-      ownMessages: []
+      ownMessages: [],
+      listening: false,
+      message: null,
+      check: true
     };
+
+
+    this.textarea = React.createRef()
+    this.submitButton = React.createRef()
+    this.paragraph = React.createRef()
+
+    this.toggleListen = this.toggleListen.bind(this)
+    this.handleListen = this.handleListen.bind(this)
   }
 
-  componentDidUpdate()
-  {
-    this.populateMessages();
-  }
+  send = () => {
+    this.setState({ check: false })
 
-  sendMessage(content)
-  {
     let ownMessages = [...this.state.ownMessages];
-    ownMessages.push(content);
+    ownMessages.push(this.textarea.current.value);
     this.setState({ ownMessages });
+    this.populateMessages();
+    this.textarea.current.value = '';
+
+    
   }
+
+
+  toggleListen() {
+    this.setState({
+      listening: !this.state.listening
+    }, this.handleListen)
+
+    console.log(this.textarea.current.value)
+  }
+
+  readClientMessage = () => {
+    if (this.state.check === true) {
+      const resp = this.textarea.current.value
+      let respSynthesis = new SpeechSynthesisUtterance(resp);
+      if (!window.speechSynthesis.speaking) {
+        window.speechSynthesis.speak(respSynthesis);
+      } else {
+        window.speechSynthesis.cancel(respSynthesis)
+      }
+    }
+    this.setState({ check: true })
+  }
+
+
+
+  handleListen() {
+
+    console.log('listening?', this.state.listening)
+
+    if (this.state.listening) {
+      recognition.start()
+      recognition.onend = () => {
+        console.log("...continue listening...")
+        recognition.start()
+      }
+
+    } else {
+      recognition.stop()
+      recognition.onend = () => {
+        console.log("Stopped listening per click")
+        this.readClientMessage()
+      }
+    }
+
+    recognition.onstart = () => {
+      console.log("Listening!")
+    }
+
+    let finalTranscript = ''
+    recognition.onresult = event => {
+      let interimTranscript = ''
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) finalTranscript += transcript + ' ';
+        else interimTranscript += transcript;
+      }
+      const transcriptArr = finalTranscript.split(' ')
+      const stopCmd = transcriptArr.slice(-3, -1)
+      console.log('stopCmd', stopCmd)
+
+      if (stopCmd[0] === 'stop' && stopCmd[1] === 'listening') {
+        recognition.stop()
+        recognition.onend = () => {
+          console.log('Stopped listening per command')
+          const finalText = transcriptArr.slice(0, -3).join(' ')
+          console.log(finalText)
+
+          this.setState({ message: this.textarea.current.value = finalText })
+          this.setState({ check: true })
+          this.readClientMessage()
+          this.setState({ check: false })
+        }
+      }
+      this.textarea.current.value = interimTranscript
+      this.setState({ message: this.textarea.current.value = finalTranscript })
+
+    }
+
+  }
+
+  
+    
+  
+
+  // sendMessage(content)
+  // {
+  //   let ownMessages = [...this.state.ownMessages];
+  //   ownMessages.push(content);
+  //   this.setState({ ownMessages });
+  // }
 
   populateMessages()
   {
@@ -53,7 +162,12 @@ class ChatWindow extends React.Component
             <Message>{this.populateMessages()}</Message>
           </MessageGroup>
         </MessageList>
-        <TextComposer onSend={(msg) => this.sendMessage(msg)}>
+                  <div>
+          <textarea ref={this.textarea} />
+          <button onClick={this.toggleListen} ref={this.submitButton}>microphone</button> 
+          <button onClick={this.send}>Submit</button>
+        </div>
+        {/* <TextComposer onSend={(msg) => this.sendMessage(msg)}>
           <Row align="center">
             <TextInput placeholder="Feel free to ask whatever you want..." />
             <IconButton>
@@ -61,7 +175,7 @@ class ChatWindow extends React.Component
             </IconButton>
             <SendButton fit />
           </Row>
-        </TextComposer>
+        </TextComposer> */}
       </FixedWrapper.Root>
     );
   }
