@@ -1,6 +1,7 @@
 import React from 'react';
 import { TitleBar, IconButton, CloseIcon, Message, MessageList, TextComposer, TextInput, SendButton, Row, FixedWrapper, MessageText, MessageGroup } from '@livechat/ui-kit';
 import './ChatWindow.css';
+import Settings from '../SettingsChat/Settings'
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 const recognition = new SpeechRecognition()
@@ -37,9 +38,7 @@ class ChatWindow extends React.Component
     ownMessages.push(this.textarea.current.value);
     this.setState({ ownMessages });
     this.populateMessages();
-    this.textarea.current.value = '';
-
-    
+    this.textarea.current.value = '';    
   }
 
 
@@ -148,10 +147,8 @@ class ChatWindow extends React.Component
   {
     return (
       <FixedWrapper.Root style={{height: '500px', width: '400px', border: '1px solid #BBB'}}>
-        <TitleBar style={{ fontSize: '1rem' }}rightIcons={[
-                    <IconButton key="customize" style={{backgroundColor: 'var(--tertiary-color)'}}>
-                      CUSTOMIZE
-                    </IconButton>,
+         <TitleBar style={{ fontSize: '1rem' }}rightIcons={[
+                  <Settings/>,
                     <IconButton key="close">
                       <CloseIcon />
                     </IconButton>
