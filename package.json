@@ -1,12 +1,12 @@
 {
-  "name": "hackathon-project-redux",
+  "name": "coderscamphackaton",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@livechat/ui-kit": "^0.4.0-5",
     "antd": "^3.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-keyboard-event-handler": "^1.4.1",
     "react-scripts": "3.0.1"
   },
   "scripts": {

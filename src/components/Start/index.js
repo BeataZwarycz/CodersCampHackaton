@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { FixedWrapper, Row, IconButton, CloseIcon, ChatIcon, MessageText, Message } from '@livechat/ui-kit';
 import { connect } from 'react-redux';
+
 // import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 import ChatWindow from '../ChatWindow';
+import CustomizeDiv from '../CustomizeDiv/CustomizeDiv';
 import { openChat } from '../../actions';
 import { watchFile } from "fs";
 
@@ -18,7 +20,6 @@ class Start extends Component {
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
         this.spaceHandler = this.spaceHandler.bind(this);
-        this.autoClick = this.autoClick.bind(this);
         this.takescreenshot = this.takescreenshot.bind(this);
       
 //bez tego 
@@ -43,7 +44,8 @@ class Start extends Component {
         Webcam.attach('#mywebcam');
         Webcam.on('load', () => {
           // this.wait(2000);
-          setInterval(this.takescreenshot, 2000);
+          if (isOpen === false)
+            setInterval(this.takescreenshot, 2000);
         });
         //setTimeout(this.takescreenshot(), 1000);
 
@@ -83,6 +85,8 @@ class Start extends Component {
           console.log("udało sie"); // tu kiedy sie udało 
           const startWindow = document.getElementById('startWindow')
           startWindow.style.display = 'none';
+          document.querySelector(".lc-10cb75y").style.display = 'none';
+          document.querySelector(".lc-1pdwro1").style.display = 'block';
           isOpen = true;
       }
   })
@@ -107,12 +111,10 @@ class Start extends Component {
     open() {
         const startWindow = document.getElementById('startWindow')
         startWindow.style.display = 'none';
+        document.querySelector(".lc-10cb75y").style.display = 'none';
+        document.querySelector(".lc-1pdwro1").style.display = 'block';
         this.props.openChat(true);
         console.log(this.props.isChatOpened);
-    }
-
-    autoClick() {
-      setInterval(this.takescreenshot(), 10000);
     }
 
     render() {

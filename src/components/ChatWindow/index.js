@@ -4,6 +4,7 @@ import { FixedWrapper, TitleBar, IconButton, CloseIcon, MessageList, MessageGrou
 
 import { openChat } from '../../actions'; 
 import './ChatWindow.css';
+import CustomizeDiv from '../CustomizeDiv/CustomizeDiv';
 import Settings from '../SettingsChat/Settings';
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -38,14 +39,17 @@ class ChatWindow extends React.Component
   }
 
   send = () => {
+    if(this.textarea.current.value.length < 1) {
+      return
+    }else {
     this.setState({ check: false })
-
     let ownMessages = [...this.state.ownMessages];
     ownMessages.push(this.textarea.current.value);
     this.setState({ ownMessages });
     this.populateMessages();
     this.textarea.current.value = '';    
-  }
+    }
+}
 
 
   toggleListen() {
@@ -77,6 +81,7 @@ class ChatWindow extends React.Component
 
     if (this.state.listening) {
       recognition.start()
+      
       recognition.onend = () => {
         console.log("...continue listening...")
         recognition.start()
@@ -86,12 +91,15 @@ class ChatWindow extends React.Component
       recognition.stop()
       recognition.onend = () => {
         console.log("Stopped listening per click")
+          document.querySelector('.iconMicro').style.color = "#427fe1"
         this.readClientMessage()
       }
     }
 
     recognition.onstart = () => {
       console.log("Listening!")
+      document.querySelector('.iconMicro').style.color = "red"
+      
     }
 
     let finalTranscript = ''
@@ -110,6 +118,7 @@ class ChatWindow extends React.Component
       if (stopCmd[0] === 'stop' && stopCmd[1] === 'listening') {
         recognition.stop()
         recognition.onend = () => {
+              document.querySelector('.iconMicro').style.color = "#427fe1"
           console.log('Stopped listening per command')
           const finalText = transcriptArr.slice(0, -3).join(' ')
           console.log(finalText)
@@ -125,7 +134,7 @@ class ChatWindow extends React.Component
 
     }
 
-  }
+}
 
   // sendMessage(content)
   // {
@@ -147,11 +156,12 @@ class ChatWindow extends React.Component
 
   render()
   {
-    console.log(this.props.isChatOpened);
     return (
-      <FixedWrapper.Root className={this.props.isChatOpened ? 'visible' : 'invisible'} style={{height: '500px', width: '400px', border: '1px solid #BBB'}}>
-        <TitleBar style={{ fontSize: '1rem' }}rightIcons={[
-                    <Settings />,
+      <div style={{float: 'right'}}>
+      <CustomizeDiv style={{position: 'absolute'}}/>
+      <FixedWrapper.Root style={{position: 'relative', height: '500px', width: '400px', border: '1px solid #BBB', float: 'right'}}>
+         <TitleBar style={{ fontSize: '1rem' }}rightIcons={[
+                  <Settings/>,
                     <IconButton key="close">
                       <CloseIcon />
                     </IconButton>
@@ -163,17 +173,29 @@ class ChatWindow extends React.Component
           </MessageGroup>
         </MessageList>
           <div className="send">
-          <textarea ref={this.textarea} />
-          <button className="micro" onClick={this.toggleListen} ref={this.submitButton}>
-            <i class="material-icons">mic</i>
-          </button> 
-          <button className="submit" onClick={this.send}>
-          <i class="material-icons">send</i>
-          </button>
+          <textarea className="mainTextArea" ref={this.textarea} />
+          <div className="box">
+          <button className="micro" onClick={this.toggleListen} ref={this.submitButton}><i className="material-icons iconMicro">
+mic
+</i></button> 
+          <button className="submit" onClick={this.send}><i class="material-icons">
+send
+</i></button>
+          </div>
         </div>
+        {/* <TextComposer onSend={(msg) => this.sendMessage(msg)}>
+          <Row align="center">
+            <TextInput placeholder="Feel free to ask whatever you want..." />
+            <IconButton>
+              <i className="material-icons">mic</i>
+            </IconButton>
+            <SendButton fit />
+          </Row>
+        </TextComposer> */}
       </FixedWrapper.Root>
+      </div>
     );
-  }
+}
 }
 
 const mapStateToProps = state => {
