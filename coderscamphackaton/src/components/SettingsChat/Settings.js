@@ -1,6 +1,7 @@
 import React from 'react';
-import { Modal, Button } from 'antd';
-import { IconButton } from '@livechat/ui-kit';
+import { Modal } from 'antd';
+import './SettingsStyle.css';
+import { IconButton, MenuVerticalIcon } from '@livechat/ui-kit';
 import 'antd/dist/antd.css'
 
 class Settings extends React.Component {
@@ -18,7 +19,7 @@ class Settings extends React.Component {
 
   handleOk = () => {
     this.setState({
-      ModalText: 'The modal will be closed after one seconds',
+      ModalText: '',
       confirmLoading: true,
     });
     setTimeout(() => {
@@ -41,14 +42,16 @@ class Settings extends React.Component {
     return (
       <div>
         <IconButton type="primary" onClick={this.showModal}>
-          Customize
+         <MenuVerticalIcon />
         </IconButton>
-        <Modal
+        <Modal className="modalStyle"
           title="Settings"
           visible={visible}
           onOk={this.handleOk}
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
+          okText="Confirm"
+          mask={false}
         >
           <p>{ModalText}</p>
         </Modal>
