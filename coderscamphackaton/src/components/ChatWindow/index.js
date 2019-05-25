@@ -2,6 +2,7 @@ import React from 'react';
 import { TitleBar, IconButton, CloseIcon, Message, MessageList, TextComposer, TextInput, SendButton, Row, FixedWrapper, MessageText, MessageGroup } from '@livechat/ui-kit';
 import './ChatWindow.css';
 import Settings from '../SettingsChat/Settings'
+import CustomizeDiv from '../CustomizeDiv/CustomizeDiv'
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 const recognition = new SpeechRecognition()
@@ -121,9 +122,6 @@ class ChatWindow extends React.Component
 
   }
 
-  
-    
-  
 
   // sendMessage(content)
   // {
@@ -146,7 +144,9 @@ class ChatWindow extends React.Component
   render()
   {
     return (
-      <FixedWrapper.Root style={{height: '500px', width: '400px', border: '1px solid #BBB'}}>
+      <div style={{float: 'right'}}>
+      <CustomizeDiv style={{position: 'absolute'}}/>
+      <FixedWrapper.Root style={{position: 'relative', height: '500px', width: '400px', border: '1px solid #BBB', float: 'right'}}>
          <TitleBar style={{ fontSize: '1rem' }}rightIcons={[
                   <Settings/>,
                     <IconButton key="close">
@@ -174,6 +174,7 @@ class ChatWindow extends React.Component
           </Row>
         </TextComposer> */}
       </FixedWrapper.Root>
+      </div>
     );
   }
 }
