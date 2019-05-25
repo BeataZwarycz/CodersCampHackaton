@@ -4,6 +4,7 @@ import { FixedWrapper, TitleBar, IconButton, CloseIcon, MessageList, MessageGrou
 
 import { openChat } from '../../actions'; 
 import './ChatWindow.css';
+import Settings from '../SettingsChat/Settings';
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
@@ -126,10 +127,6 @@ class ChatWindow extends React.Component
 
   }
 
-  
-    
-  
-
   // sendMessage(content)
   // {
   //   let ownMessages = [...this.state.ownMessages];
@@ -154,9 +151,7 @@ class ChatWindow extends React.Component
     return (
       <FixedWrapper.Root className={this.props.isChatOpened ? 'visible' : 'invisible'} style={{height: '500px', width: '400px', border: '1px solid #BBB'}}>
         <TitleBar style={{ fontSize: '1rem' }}rightIcons={[
-                    <IconButton key="customize" style={{backgroundColor: 'var(--tertiary-color)'}}>
-                      CUSTOMIZE
-                    </IconButton>,
+                    <Settings />,
                     <IconButton key="close">
                       <CloseIcon />
                     </IconButton>
@@ -167,10 +162,14 @@ class ChatWindow extends React.Component
             <Message>{this.populateMessages()}</Message>
           </MessageGroup>
         </MessageList>
-                  <div>
+          <div className="send">
           <textarea ref={this.textarea} />
-          <button onClick={this.toggleListen} ref={this.submitButton}>microphone</button> 
-          <button onClick={this.send}>Submit</button>
+          <button className="micro" onClick={this.toggleListen} ref={this.submitButton}>
+            <i class="material-icons">mic</i>
+          </button> 
+          <button className="submit" onClick={this.send}>
+          <i class="material-icons">send</i>
+          </button>
         </div>
       </FixedWrapper.Root>
     );

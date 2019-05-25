@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { FixedWrapper, Row, IconButton, CloseIcon, ChatIcon, MessageText, Message } from '@livechat/ui-kit';
 import { connect } from 'react-redux';
+// import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 import ChatWindow from '../ChatWindow';
 import { openChat } from '../../actions';
+import { watchFile } from "fs";
+
+const Webcam = window.Webcam;
+const posenet = window.posenet;
 
 class Start extends Component {
     constructor(props) {
@@ -11,8 +16,71 @@ class Start extends Component {
     
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
-        
+        this.spaceHandler = this.spaceHandler.bind(this);
+      
+//bez tego 
       }
+
+      wait(ms){
+        var start = new Date().getTime();
+        var end = start;
+        while(end < start + ms) {
+          end = new Date().getTime();
+       }
+      }
+
+      componentDidMount() {
+        document.addEventListener("keydown", this.spaceHandler);
+        Webcam.set({
+          width: 600,
+          height: 400,
+          image_format: 'jpeg',
+          jpeg_quality: 90
+        });
+        Webcam.attach('#mywebcam');
+        this.wait(7000);
+        setTimeout(this.takescreenshot(), 1000);
+
+      }
+
+    spaceHandler(e) {
+      if (e.keyCode === 32) {
+        this.open();
+      }
+    }
+
+    takescreenshot(){
+      Webcam.snap(function(data_uri){
+          document.getElementById('results').innerHTML = "<img id = 'obrazek' style = 'display:none' width='300' src='"+data_uri+"'>";  
+    
+  var imageScaleFactor = 0.5;
+  var outputStride = 16;
+  var flipHorizontal = false;
+
+  var imageElement = document.getElementById('obrazek');
+
+  posenet.load().then(function(net){
+      return net.estimateSinglePose(imageElement, imageScaleFactor, flipHorizontal, outputStride)
+  }).then(function(pose){
+      console.log(pose);
+      console.log(pose.keypoints[2].position.y);
+      console.log(pose.keypoints[3].position.y);
+var temp = pose.keypoints[4].position.y-pose.keypoints[1].position.y;
+      if(temp>10){
+          console.log("udało sie"); // tu kiedy sie udało 
+      }
+  })
+}
+  )    
+  }
+  
+
+
+    componentWillUnmount() {
+      document.removeEventListener("keydown", this.spaceHandler);
+    }
+
+
 
     close() {
         const startWindow = document.getElementById('startWindow')
@@ -29,6 +97,7 @@ class Start extends Component {
     render() {
         return (
           <div>
+            <div id="mywebcam" style={{display: 'none'}}></div>
             <ChatWindow visible={this.props.isChatOpened} />
             <FixedWrapper.Root>
                 <FixedWrapper.Minimized style={{ width: '400px', height: '320px' }}>
