@@ -160,7 +160,7 @@ class ChatWindow extends React.Component
           </MessageGroup>
         </MessageList>
           <div className="send">
-          <textarea ref={this.textarea} />
+          <textarea className="mainTextArea"ref={this.textarea} />
           <div className="box">
           <button className="micro" onClick={this.toggleListen} ref={this.submitButton}><i class="material-icons">
 mic

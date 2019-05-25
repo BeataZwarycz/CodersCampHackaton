@@ -10,12 +10,17 @@ class Settings extends React.Component {
     ModalText: '',
     visible: false,
     confirmLoading: false,
-    fontSizeA: "12px",
-    backgroundColor: ' #427fe1',
+    fontSizeA: "8px",
+    backgroundColor: '#427fe1',
     defaultColor: 'white',
     secondBackgroundColor: 'white',
     messageColor: 'black',
-    messageColorBackground: 'lightgray'
+    messageColorBackground: 'lightgray',
+    textAreaText: 'black',
+    boxBackground: 'white',
+    iconColor: '#427fe1',
+    underDiv: "white"
+
   };
 
   showModal = () => {
@@ -45,13 +50,13 @@ class Settings extends React.Component {
   };
 
   sizeA = () => {
-    this.setState({fontSizeA: '15px'})
+    this.setState({fontSizeA: '8px'})
   }
   sizeAA = () => {
-    this.setState({fontSizeA: '20px'})
+    this.setState({fontSizeA: '15px'})
   }
     sizeAAA = () => {
-    this.setState({fontSizeA: '25px'})
+    this.setState({fontSizeA: '23px'})
   }
 
   defaultContrast = () => {
@@ -60,6 +65,10 @@ class Settings extends React.Component {
     this.setState({secondBackgroundColor: 'white'})
     this.setState({messageColor: 'black'})
     this.setState({messageColorBackground: 'lightgray'})
+    this.setState({textAreaText: 'black'})
+    this.setState({boxBackground: 'white'})
+    this.setState({iconColor: '#427fe1'})
+    this.setState({underDiv: 'white'})
   }
 
   firstContrast = () => {
@@ -68,20 +77,32 @@ class Settings extends React.Component {
     this.setState({secondBackgroundColor: 'yellow'})
     this.setState({messageColor: 'black'})
     this.setState({messageColorBackground: '#ffff8d'})
+    this.setState({textAreaText: 'black'})
+    this.setState({boxBackground: 'yellow'})
+     this.setState({iconColor: 'black'})
+     this.setState({underDiv: 'yellow'})
   }
   secondContrast = () => {
     this.setState({backgroundColor: 'black'})
     this.setState({defaultColor: 'yellow'})
     this.setState({secondBackgroundColor: 'black'})
-    this.setState({messageColor: 'black'})
-    this.setState({messageColorBackground: '#ffff8d'})
+    this.setState({messageColor: 'yellow'})
+    this.setState({messageColorBackground: '#212121'})
+    this.setState({textAreaText: 'yellow'})
+    this.setState({boxBackground: 'black'})
+     this.setState({iconColor: 'yellow'})
+     this.setState({underDiv: 'black'})
   }
   thirdContrast = () => {
     this.setState({backgroundColor: 'black'})
     this.setState({defaultColor: 'white'})
     this.setState({secondBackgroundColor: 'black'})
     this.setState({messageColor: 'white'})
-    this.setState({messageColorBackground: 'gray'})
+    this.setState({messageColorBackground: '#212121'})
+    this.setState({textAreaText: 'white'})
+    this.setState({boxBackground: 'black'})
+     this.setState({iconColor: 'white'})
+     this.setState({underDiv: 'black'})
   }
 
 
@@ -101,14 +122,19 @@ class Settings extends React.Component {
           okText="Confirm"
           mask={false}
         >
-          <div>Change Window Color</div>
+          <div className="changeColorHeader">Change chat Color</div>
           <div className="colorChangesHolder">
           <div className="changeColorDiv defaultColor" onClick={this.defaultContrast}>A</div>  
           <div className="changeColorDiv firstColor" onClick={this.firstContrast}>A</div>
           <div className="changeColorDiv secondColor"onClick={this.secondContrast}>A</div>
           <div className="changeColorDiv thirdColor"onClick={this.thirdContrast}>A</div>
           </div>
-          <div><button id="a" onClick={this.sizeA}>A+</button><button id="aa" onClick={this.sizeAA}>A++</button><button id="aaa" onClick={this.sizeAAA}>A+++</button>Change text size</div>
+          <div className="changeColorHeader">Change font size</div>
+          <div className="fontSizeHolder">
+          <div id="a" className="fontSize" onClick={this.sizeA}>A+</div>
+          <div id="aa" className="fontSize" onClick={this.sizeAA}>A++</div>
+          <div id="aaa" className="fontSize" onClick={this.sizeAAA}>A+++</div>
+          </div>
         </Modal>
         <style>{`         
         :root {
@@ -131,7 +157,21 @@ class Settings extends React.Component {
             color: ${this.state.messageColor} !important;
             background-color: ${this.state.messageColorBackground} !important;
           }
-    
+
+          .mainTextArea {
+            color: ${this.state.textAreaText};
+          }
+          
+          .box {
+            background-color: ${this.state.boxBackground};
+          }
+
+          .box i {
+            color: ${this.state.iconColor};
+          }
+          .lc-1pdwro1 {
+            background-color: ${this.state.underDiv}
+          }
         `}
         </style>
       </div>
