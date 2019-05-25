@@ -9,6 +9,7 @@ class Settings extends React.Component {
     ModalText: '',
     visible: false,
     confirmLoading: false,
+    fontSizeA: "12px"
   };
 
   showModal = () => {
@@ -37,6 +38,11 @@ class Settings extends React.Component {
     });
   };
 
+  sizeA = () => {
+    this.setState({fontSizeA: '15px'})
+  }
+
+
   render() {
     const { visible, confirmLoading, ModalText } = this.state;
     return (
@@ -53,8 +59,16 @@ class Settings extends React.Component {
           okText="Confirm"
           mask={false}
         >
-          <p>{ModalText}</p>
+          <div>Change Window Size</div>
+          <div><button>A</button><button>A</button><button>A</button>Change color</div>
+          <div><button id="a" onClick={this.sizeA}>A+</button><button id="aa" onClick={this.sizeAA}>A++</button><button id="aaa" onClick={this.sizeAAA}>A+++</button>Change text size</div>
         </Modal>
+        <style>{`         
+        :root {
+            font-size: ${this.state.fontSizeA}
+          }
+        `}
+        </style>
       </div>
     );
   }
