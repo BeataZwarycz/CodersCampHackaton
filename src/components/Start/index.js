@@ -9,6 +9,7 @@ import { watchFile } from "fs";
 
 const Webcam = window.Webcam;
 const posenet = window.posenet;
+var isOpen = false;
 
 class Start extends Component {
     constructor(props) {
@@ -17,6 +18,8 @@ class Start extends Component {
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
         this.spaceHandler = this.spaceHandler.bind(this);
+        this.autoClick = this.autoClick.bind(this);
+        this.takescreenshot = this.takescreenshot.bind(this);
       
 //bez tego 
       }
@@ -38,21 +41,31 @@ class Start extends Component {
           jpeg_quality: 90
         });
         Webcam.attach('#mywebcam');
-        this.wait(7000);
-        setTimeout(this.takescreenshot(), 1000);
+        Webcam.on('load', () => {
+          // this.wait(2000);
+          setInterval(this.takescreenshot, 2000);
+        });
+        //setTimeout(this.takescreenshot(), 1000);
 
       }
-
+    
     spaceHandler(e) {
       if (e.keyCode === 32) {
         this.open();
       }
     }
 
+
+
     takescreenshot(){
+
+      console.log(isOpen);
+          if (isOpen) this.props.openChat(true); 
+
       Webcam.snap(function(data_uri){
+
           document.getElementById('results').innerHTML = "<img id = 'obrazek' style = 'display:none' width='300' src='"+data_uri+"'>";  
-    
+        
   var imageScaleFactor = 0.5;
   var outputStride = 16;
   var flipHorizontal = false;
@@ -63,17 +76,21 @@ class Start extends Component {
       return net.estimateSinglePose(imageElement, imageScaleFactor, flipHorizontal, outputStride)
   }).then(function(pose){
       console.log(pose);
-      console.log(pose.keypoints[2].position.y);
-      console.log(pose.keypoints[3].position.y);
-var temp = pose.keypoints[4].position.y-pose.keypoints[1].position.y;
-      if(temp>10){
+      //console.log(pose.keypoints[2].position.y);
+      //console.log(pose.keypoints[3].position.y);
+      var temp = pose.keypoints[4].position.y-pose.keypoints[1].position.y;
+      if(temp>20&&pose.keypoints[4].position.y>0&&pose.keypoints[1].position.y>0){
           console.log("udało sie"); // tu kiedy sie udało 
+          const startWindow = document.getElementById('startWindow')
+          startWindow.style.display = 'none';
+          isOpen = true;
       }
   })
 }
   )    
   }
-  
+
+
 
 
     componentWillUnmount() {
@@ -94,10 +111,16 @@ var temp = pose.keypoints[4].position.y-pose.keypoints[1].position.y;
         console.log(this.props.isChatOpened);
     }
 
+    autoClick() {
+      setInterval(this.takescreenshot(), 10000);
+    }
+
     render() {
         return (
           <div>
-            <div id="mywebcam" style={{display: 'none'}}></div>
+            <div id="mywebcam" style={{display: 'none'}} onClick={this.autoClick}>
+            }}></div>
+            <div id="results"></div>
             <ChatWindow visible={this.props.isChatOpened} />
             <FixedWrapper.Root>
                 <FixedWrapper.Minimized style={{ width: '400px', height: '320px' }}>
