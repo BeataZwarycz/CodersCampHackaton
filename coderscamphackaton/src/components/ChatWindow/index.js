@@ -1,5 +1,5 @@
 import React from 'react';
-import { TitleBar, IconButton, CloseIcon, Message, MessageList, TextComposer, TextInput, SendButton, Row, FixedWrapper, MessageText, MessageGroup } from '@livechat/ui-kit';
+import { TitleBar, IconButton, CloseIcon, Message, MessageList, FixedWrapper, MessageText, MessageGroup } from '@livechat/ui-kit';
 import './ChatWindow.css';
 import Settings from '../SettingsChat/Settings'
 
