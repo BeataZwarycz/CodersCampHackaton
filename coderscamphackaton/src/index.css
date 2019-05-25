@@ -17,7 +17,6 @@ code {
     monospace;
 }
 
-<<<<<<< HEAD
 #animation {
   color: #ffffff;
   height: 50px; 
@@ -45,7 +44,6 @@ code {
   50%{opacity: 1}
   100%{opacity: 0;}
 }
-=======
 .colorChangesHolder {
   display: flex;
   flex-direction:  row;
@@ -85,4 +83,3 @@ background-color: black;
 color: white;
 border: 1px solid white;
 }
->>>>>>> cb0fb934514891deb4afe55ffff9a667b251002c
